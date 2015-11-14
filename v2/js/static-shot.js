@@ -1,33 +1,26 @@
 /**
  * StaticShot namespace
- * @type {{}}
+ * @type {}
  */
 var SS = {};
 
-/**
- * Abstraction layer for <canvas>
- */
-{
-	SS.Canvas = Backbone.Model.extend({
-		//
-	});
+SS.helpers = {
+	/**
+	 * @link http://stackoverflow.com/a/8306028
+	 * @param {Element} canvas
+	 * @returns {Element}
+	 */
+	cloneCanvas: function (canvas) {
+		var newCanvas = document.createElement('canvas');
 
-	SS.CanvasView = Backbone.View.extend({
-		tagName: 'canvas',
-		initialize: function(){},
-		render: function(){},
-		clear: function() {
-			var width = this.el.width,
-				height = this.el.height;
+		newCanvas.width = canvas.width;
+		newCanvas.height = canvas.height;
 
-			this.el.width = 0;
-			this.el.height = 0;
+		newCanvas.getContext('2d').drawImage(canvas, 0, 0);
 
-			this.el.width = width;
-			this.el.height = height;
-		}
-	});
-}
+		return newCanvas;
+	}
+};
 
 {
 	SS.Tool = Backbone.Model.extend({
@@ -35,7 +28,12 @@ var SS = {};
 			id: '',
 			active: false
 		},
-		activate: function() {
+		/**
+		 * @param {Element} A copy of current canvas
+		 * @param [] $workspace Append here any elements you need
+		 * @param {function} update First parameter must be a <canvas> that will replace current
+		 */
+		activate: function(canvas, $workspace, update) {
 			this.set('active', true);
 		},
 		deactivate: function() {
@@ -44,12 +42,7 @@ var SS = {};
 	});
 
 	SS.ToolView = Backbone.View.extend({
-		$el: {},
-		initialize: function() {
-			this.$el = {
-				$button: null
-			};
-		}
+		initialize: function() {}
 	});
 }
 
