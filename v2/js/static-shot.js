@@ -23,10 +23,19 @@ SS.helpers = {
 };
 
 {
+	SS.ToolView = Backbone.View.extend({
+		initialize: function() {}
+	});
+
 	SS.Tool = Backbone.Model.extend({
 		defaults: {
 			id: '',
 			active: false
+		},
+		view: new SS.ToolView(),
+		initialize: function() {},
+		getTitle: function() {
+			return 'Default Tool';
 		},
 		/**
 		 * @param {Element} A copy of current canvas
@@ -40,13 +49,16 @@ SS.helpers = {
 			this.set('active', false);
 		}
 	});
-
-	SS.ToolView = Backbone.View.extend({
-		initialize: function() {}
-	});
 }
 
 {
+	SS.ToolBoxView = Backbone.View.extend({
+		template: _.template('undefined template'),
+		render: function() {
+			this.$el.html(this.template());
+		}
+	});
+
 	SS.ToolBox = Backbone.Model.extend({
 		defaults: {
 			/**
@@ -64,9 +76,5 @@ SS.helpers = {
 		getTool: function(id) {
 			return _.find(this.get('tools'), function(tool){ return tool.get('id') === id; });
 		}
-	});
-
-	SS.ToolBoxView = Backbone.View.extend({
-		//
 	});
 }
